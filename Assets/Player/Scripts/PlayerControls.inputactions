@@ -2,12 +2,12 @@
     "name": "PlayerControls",
     "maps": [
         {
-            "name": "PlayerLocomotionMap",
+            "name": "Player Movement",
             "id": "90e1ff4c-63f9-4bbc-bb57-cd0f15db4ad6",
             "actions": [
                 {
                     "name": "Movement",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "5561e2c6-b217-4f1b-9f41-f875f6f9a614",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -15,13 +15,13 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Look",
-                    "type": "Value",
-                    "id": "6df901db-18e2-4806-adf9-7cec799f0b1c",
+                    "name": "Camera",
+                    "type": "PassThrough",
+                    "id": "0871dcf7-7f37-4707-b919-07e1b975cf77",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -137,12 +137,106 @@
                 },
                 {
                     "name": "",
-                    "id": "8b687975-b7a4-4de5-98af-4702fe09f9db",
+                    "id": "0d42c8a1-46aa-43a6-b4cc-a84440d5b28d",
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Look",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Right Stick",
+                    "id": "06def347-e2c7-48d1-9ef2-08ec9d7da0ed",
+                    "path": "2DVector(mode=2)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "30d5e4c9-0764-4772-a70b-05f68bcfe9c3",
+                    "path": "<Gamepad>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "ad904007-bc96-4a5e-bdef-a4fb654236da",
+                    "path": "<Gamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "d0090379-5cd8-477e-8812-aabf5996e706",
+                    "path": "<Gamepad>/rightStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "fe4c0fc5-be16-429a-ac63-a5c149f1d85b",
+                    "path": "<Gamepad>/rightStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Player Actions",
+            "id": "6845f323-9f84-4344-84f4-bec36e923b51",
+            "actions": [
+                {
+                    "name": "B",
+                    "type": "Button",
+                    "id": "87ab13cc-a7b1-4dc1-990f-b585e3f66437",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "dafd6738-84e9-491a-a05e-a8c9218a61ff",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "B",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d514aa69-5637-479c-ba38-dc7eaea3269a",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "B",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
