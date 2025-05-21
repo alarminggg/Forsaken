@@ -208,7 +208,7 @@
             "id": "6845f323-9f84-4344-84f4-bec36e923b51",
             "actions": [
                 {
-                    "name": "B",
+                    "name": "Sprint",
                     "type": "Button",
                     "id": "87ab13cc-a7b1-4dc1-990f-b585e3f66437",
                     "expectedControlType": "",
@@ -221,11 +221,11 @@
                 {
                     "name": "",
                     "id": "dafd6738-84e9-491a-a05e-a8c9218a61ff",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "B",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -236,7 +236,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "B",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
