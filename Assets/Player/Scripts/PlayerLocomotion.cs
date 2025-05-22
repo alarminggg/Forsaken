@@ -52,6 +52,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (isJumping)
+            return;
+
         moveDirection = cameraObject.forward * inputManager.verticalInput;
         moveDirection = moveDirection + cameraObject.right * inputManager.horizontalInput;
         moveDirection.y = 0;
@@ -77,6 +80,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleRotation()
     {
+        if(isJumping)
+            return;
+
         Vector3 targetDirection = Vector3.zero;
 
         targetDirection = cameraObject.forward * inputManager.verticalInput;
@@ -99,13 +105,15 @@ public class PlayerLocomotion : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 raycastOrigin = transform.position;
+        Vector3 targetPosition;
         raycastOrigin.y = raycastOrigin.y + raycastHeightOffset;
+        targetPosition = transform.position;
 
-        if(!isGrounded)
+        if(!isGrounded && !isJumping)
         {
             if(!playerManager.isInteracting)
             {
-                animatorManager.PlayTargetAnimation("FallingLoop", true);
+                animatorManager.PlayTargetAnimation("Falling Idle", true);
             }
             inAirTimer = inAirTimer + Time.deltaTime;
             playerRigidbody.AddForce(transform.forward * leapingVelocity);
@@ -119,6 +127,8 @@ public class PlayerLocomotion : MonoBehaviour
                 animatorManager.PlayTargetAnimation("Landing (3)", true);
             }
 
+            Vector3 raycastHitPoint = hit.point;
+            targetPosition.y = raycastHitPoint.y;
             inAirTimer = 0;
             isGrounded = true;
             Debug.Log("Player is grounded");
@@ -127,6 +137,18 @@ public class PlayerLocomotion : MonoBehaviour
         {
             isGrounded = false;
             Debug.Log("Player is NOT grounded");
+        }
+
+        if (isGrounded && !isJumping)
+        {
+            if(playerManager.isInteracting || inputManager.moveAmount > 0)
+            {
+                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime / 0.1f);
+            }
+            else
+            {
+                transform.position = targetPosition;
+            }
         }
     }
 
