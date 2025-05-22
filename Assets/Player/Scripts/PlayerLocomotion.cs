@@ -19,6 +19,7 @@ public class PlayerLocomotion : MonoBehaviour
     public bool isSprinting;
     public bool isGrounded;
     public bool isJumping;
+    public bool isAttacking;
 
     public float walkingSpeed = 1.5f;
     public float runningSpeed = 5;
@@ -48,6 +49,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         HandleMovement();
         HandleRotation();
+        HandleAttack();
     }
 
     private void HandleMovement()
@@ -163,6 +165,15 @@ public class PlayerLocomotion : MonoBehaviour
             Vector3 playerVelocity = moveDirection;
             playerVelocity.y = jumpingVelocity;
             playerRigidbody.linearVelocity = playerVelocity;
+        }
+    }
+
+    public void HandleAttack()
+    {
+        if(isAttacking)
+        {
+            animatorManager.animator.SetTrigger("Attack");
+            
         }
     }
 }
