@@ -49,7 +49,6 @@ public class PlayerLocomotion : MonoBehaviour
 
         HandleMovement();
         HandleRotation();
-        HandleAttack();
     }
 
     private void HandleMovement()
@@ -133,12 +132,12 @@ public class PlayerLocomotion : MonoBehaviour
             targetPosition.y = raycastHitPoint.y;
             inAirTimer = 0;
             isGrounded = true;
-            Debug.Log("Player is grounded");
+            
         }
         else
         {
             isGrounded = false;
-            Debug.Log("Player is NOT grounded");
+            
         }
 
         if (isGrounded && !isJumping)
@@ -173,6 +172,7 @@ public class PlayerLocomotion : MonoBehaviour
 
         if (isAttacking)
             return;
-        animatorManager.animator.SetTrigger("Attack");
+        animatorManager.animator.SetBool("isAttacking", true);
+        animatorManager.PlayTargetAnimation("MeleeAttack_OneHanded", false);
     }
 }

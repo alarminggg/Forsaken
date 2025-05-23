@@ -99,8 +99,8 @@ public class InputManager : MonoBehaviour
         if(attack_input)
         {
             Debug.Log("HandleAttackInput: attack_input is TRUE");
-            playerLocomotion.HandleAttack();
             attack_input = false;
+            playerLocomotion.HandleAttack();
         }
     }
 
