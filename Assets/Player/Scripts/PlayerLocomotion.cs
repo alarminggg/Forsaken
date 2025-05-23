@@ -170,10 +170,9 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleAttack()
     {
-        if(isAttacking)
-        {
-            animatorManager.animator.SetTrigger("Attack");
-            
-        }
+
+        if (isAttacking)
+            return;
+        animatorManager.animator.SetTrigger("Attack");
     }
 }

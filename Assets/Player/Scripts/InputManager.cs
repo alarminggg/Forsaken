@@ -18,6 +18,7 @@ public class InputManager : MonoBehaviour
     public bool sprint_input;
     public bool jump_input;
     public bool attack_input;
+    public bool pause_input;
 
     private void Awake()
     {
@@ -40,6 +41,8 @@ public class InputManager : MonoBehaviour
             playerControls.PlayerActions.Jump.performed += i => jump_input = true;
 
             playerControls.PlayerActions.Attack.performed += i => attack_input = true;
+
+            playerControls.PlayerUIControl.PauseGame.performed += i => pause_input = true;
         }
 
         playerControls.Enable();
@@ -97,6 +100,9 @@ public class InputManager : MonoBehaviour
         {
             Debug.Log("HandleAttackInput: attack_input is TRUE");
             playerLocomotion.HandleAttack();
+            attack_input = false;
         }
     }
+
+    
 }

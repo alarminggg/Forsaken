@@ -326,6 +326,45 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerUI Control"",
+            ""id"": ""58656a5d-18e5-470b-ad67-28b66247afc7"",
+            ""actions"": [
+                {
+                    ""name"": ""PauseGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""736250f7-8c5d-4101-9f25-b06e5ad31d9f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ce94e2ec-9661-4fd2-81fa-577b3614ae7f"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a039c755-7f27-49dc-8a08-e6bb53bab3fa"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -339,12 +378,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions_Sprint = m_PlayerActions.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
+        // PlayerUI Control
+        m_PlayerUIControl = asset.FindActionMap("PlayerUI Control", throwIfNotFound: true);
+        m_PlayerUIControl_PauseGame = m_PlayerUIControl.FindAction("PauseGame", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
     {
         Debug.Assert(!m_PlayerMovement.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerMovement.Disable() has not been called.");
         Debug.Assert(!m_PlayerActions.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerActions.Disable() has not been called.");
+        Debug.Assert(!m_PlayerUIControl.enabled, "This will cause a leak and performance issues, PlayerControls.PlayerUIControl.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -518,6 +561,52 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+
+    // PlayerUI Control
+    private readonly InputActionMap m_PlayerUIControl;
+    private List<IPlayerUIControlActions> m_PlayerUIControlActionsCallbackInterfaces = new List<IPlayerUIControlActions>();
+    private readonly InputAction m_PlayerUIControl_PauseGame;
+    public struct PlayerUIControlActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PlayerUIControlActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PauseGame => m_Wrapper.m_PlayerUIControl_PauseGame;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerUIControl; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerUIControlActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerUIControlActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerUIControlActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerUIControlActionsCallbackInterfaces.Add(instance);
+            @PauseGame.started += instance.OnPauseGame;
+            @PauseGame.performed += instance.OnPauseGame;
+            @PauseGame.canceled += instance.OnPauseGame;
+        }
+
+        private void UnregisterCallbacks(IPlayerUIControlActions instance)
+        {
+            @PauseGame.started -= instance.OnPauseGame;
+            @PauseGame.performed -= instance.OnPauseGame;
+            @PauseGame.canceled -= instance.OnPauseGame;
+        }
+
+        public void RemoveCallbacks(IPlayerUIControlActions instance)
+        {
+            if (m_Wrapper.m_PlayerUIControlActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerUIControlActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerUIControlActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerUIControlActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerUIControlActions @PlayerUIControl => new PlayerUIControlActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -528,5 +617,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+    }
+    public interface IPlayerUIControlActions
+    {
+        void OnPauseGame(InputAction.CallbackContext context);
     }
 }
