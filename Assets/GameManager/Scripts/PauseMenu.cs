@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
     public GameObject deathMenuUI;
+    public GameObject winMenuUI;
 
     public GameObject InGameUI;
 
@@ -190,6 +191,30 @@ public class PauseMenu : MonoBehaviour
 
         if (InGameUI != null)
         {   
+            InGameUI.SetActive(false);
+        }
+
+        DisablePlayerInputs();
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(retryButton.gameObject);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void TriggerWin()
+    {
+        Time.timeScale = 0f;
+        GameIsPaused = true;
+        isDead = true;
+
+        winMenuUI.SetActive(true);
+
+        pauseMenuUI.SetActive(false);
+
+        if (InGameUI != null)
+        {
             InGameUI.SetActive(false);
         }
 

@@ -21,6 +21,7 @@ public class EnemyDamage : MonoBehaviour
     private float windUpStartTime = 0f;
     private float lastAttackTime = 0f;
 
+
     private void Start()
     {
         GetReference();
